@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+      - ready_for_review
+
+jobs:
+  test:
+    name: Lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm lint
+      - run: pnpm build
