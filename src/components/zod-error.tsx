@@ -134,7 +134,7 @@ function PrettyZodIssues(props: {
   const { issues, level = 0, titlePrefix = "" } = props;
   const len = issues.length;
   const summary = (
-    <summary className="cursor-pointer text-lg text-red-700 dark:text-red-500">
+    <summary className="cursor-pointer text-red-700 dark:text-red-500">
       {titlePrefix}
       {len === 1 ? `${len} issue` : `${len} issues`}
     </summary>
@@ -147,8 +147,10 @@ function PrettyZodIssues(props: {
     path = path ? `$.${path}` : "$";
     const pathNode = (
       <p className="text-sm">
-        <span className="font-mono dark:text-yellow-400">{path}</span>:{" "}
-        {issue.message}
+        <span className="font-mono font-semibold dark:text-yellow-400">
+          {path}
+        </span>
+        : {issue.message}
       </p>
     );
 
@@ -180,7 +182,14 @@ function PrettyZodIssues(props: {
         break;
       }
       case "unrecognized_keys": {
-        node = <p>Keys: {issue.keys.join(", ")}</p>;
+        node = (
+          <Diff
+            wantLabel={null}
+            want={null}
+            gotLabel="keys"
+            got={stringify(issue.keys)}
+          />
+        );
         break;
       }
       case "invalid_enum_value": {
@@ -194,7 +203,14 @@ function PrettyZodIssues(props: {
         break;
       }
       case "invalid_union_discriminator": {
-        node = <p>Allowed: {issue.options.join(", ")}</p>;
+        node = (
+          <Diff
+            wantLabel="allowed"
+            want={stringify(issue.options)}
+            gotLabel={null}
+            got={null}
+          />
+        );
         break;
       }
       case "invalid_union": {
@@ -202,9 +218,8 @@ function PrettyZodIssues(props: {
         node = (
           <>
             <p className="mb-2 max-w-prose">
-              Attemped to validate data against one of {len} union members. None
-              of the attempts succeeded and below are the errors that each
-              raised:
+              Attemped to validate data against one of {len} schemas. None of
+              the attempts succeeded and below are the errors that each raised:
             </p>
             <div className={cn("rounded-3xl", bg)}>
               {issue.unionErrors.map((err, i) => (
@@ -213,7 +228,7 @@ function PrettyZodIssues(props: {
                     <PrettyZodIssues
                       issues={err.issues}
                       level={level + 1}
-                      titlePrefix={`Member ${i + 1} of ${len}: `}
+                      titlePrefix={`Schema ${i + 1} of ${len}: `}
                     />
                   </DetailsThemeContext.Provider>
                 </div>
@@ -228,13 +243,13 @@ function PrettyZodIssues(props: {
     return (
       <li className="flex items-baseline gap-x-2" key={index}>
         {arr.length > 1 ? (
-          <span className="shrink-0 grow-0 font-bold tabular-nums">
+          <span className="shrink-0 grow-0 text-xs tabular-nums">
             Issue {index + 1}
           </span>
         ) : null}
         <div
           className={cn({
-            "space-y-2 border-s-2 border-dotted border-red-600 ps-2": true,
+            "space-y-2 border-s-2 border-dotted border-red-500 ps-2": true,
             "ms-[5px]": arr.length <= 1,
           })}
         >
@@ -246,7 +261,7 @@ function PrettyZodIssues(props: {
   });
 
   return (
-    <details className={cn("max-w-full p-4")} open={level === 0}>
+    <details className="max-w-full p-4" open={level === 0}>
       {summary}
       <ol className="flex list-inside flex-col gap-4">{issueNodes}</ol>
     </details>
@@ -268,21 +283,29 @@ function stringify(val: unknown): React.ReactNode {
 
 function Diff(props: {
   want: React.ReactNode;
-  wantLabel?: string;
+  wantLabel?: string | null;
   got: React.ReactNode;
-  gotLabel?: string;
+  gotLabel?: string | null;
 }): React.ReactNode {
   const { want, got, wantLabel = "want", gotLabel = "got" } = props;
   return (
     <dl className="grid grid-cols-[max-content,auto] items-baseline gap-x-2">
-      <dt className="text-end text-sm font-semibold text-green-700 dark:text-green-600">
-        {wantLabel}
-      </dt>
-      <dd>{want}</dd>
-      <dt className="text-end text-sm font-semibold text-red-700 dark:text-red-600">
-        {gotLabel}
-      </dt>
-      <dd>{got}</dd>
+      {wantLabel ? (
+        <>
+          <dt className="text-end text-sm font-semibold text-green-700 dark:text-green-600">
+            {wantLabel}
+          </dt>
+          <dd>{want}</dd>
+        </>
+      ) : null}
+      {gotLabel ? (
+        <>
+          <dt className="text-end text-sm font-semibold text-red-700 dark:text-red-600">
+            {gotLabel}
+          </dt>
+          <dd>{got}</dd>
+        </>
+      ) : null}
     </dl>
   );
 }
