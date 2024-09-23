@@ -142,15 +142,46 @@ function PrettyZodIssues(props: {
 
   const issueNodes = issues.map((issue, index, arr) => {
     let node: React.ReactNode = null;
+    let pathParent: React.ReactNode = null;
+    let pathBase: React.ReactNode = null;
+    switch (issue.path.length) {
+      case 0:
+        pathBase = (
+          <span className="font-mono font-semibold text-pink-950 dark:text-yellow-500">
+            $
+          </span>
+        );
+        break;
+      case 1:
+        pathParent = (
+          <span className="font-mono text-pink-900 dark:text-yellow-200">
+            $.
+          </span>
+        );
+        pathBase = (
+          <span className="font-mono font-semibold text-pink-950 dark:text-yellow-500">
+            {issue.path.join("")}
+          </span>
+        );
+        break;
+      default:
+        pathParent = (
+          <span className="font-mono text-pink-900 dark:text-yellow-200">
+            $.{issue.path.slice(0, -1).join(".")}.
+          </span>
+        );
+        pathBase = (
+          <span className="font-mono font-semibold text-pink-950 dark:text-yellow-500">
+            {issue.path.slice(-1).join("")}
+          </span>
+        );
+        break;
+    }
 
-    let path = issue.path.join(".");
-    path = path ? `$.${path}` : "$";
     const pathNode = (
       <p className="text-sm">
-        <span className="font-mono font-semibold dark:text-yellow-400">
-          {path}
-        </span>
-        : {issue.message}
+        {pathParent}
+        {pathBase}: {issue.message}
       </p>
     );
 
@@ -168,12 +199,12 @@ function PrettyZodIssues(props: {
         node = (
           <Diff
             want={
-              <span className="font-mono dark:text-cyan-500">
+              <span className="font-mono text-sky-700 dark:text-cyan-500">
                 {issue.expected}
               </span>
             }
             got={
-              <span className="font-mono dark:text-cyan-500">
+              <span className="font-mono text-sky-700 dark:text-cyan-500">
                 {issue.received}
               </span>
             }
@@ -195,8 +226,12 @@ function PrettyZodIssues(props: {
       case "invalid_enum_value": {
         node = (
           <Diff
-            want={stringify(issue.options)}
             wantLabel="allowed"
+            want={
+              <span className="font-mono">
+                {JSON.stringify(issue.options).slice(1, -1)}
+              </span>
+            }
             got={stringify(issue.received)}
           />
         );
@@ -218,8 +253,8 @@ function PrettyZodIssues(props: {
         node = (
           <>
             <p className="mb-2 max-w-prose">
-              Attemped to validate data against one of {len} schemas. None of
-              the attempts succeeded and below are the errors that each raised:
+              Failed to validate data against one of {len} schemas in a Zod
+              union:
             </p>
             <div className={cn("rounded-3xl", bg)}>
               {issue.unionErrors.map((err, i) => (
