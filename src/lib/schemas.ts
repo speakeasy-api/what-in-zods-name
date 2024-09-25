@@ -15,7 +15,17 @@ const zodErrorMini = z
 const zodIssue: z.ZodType<z.ZodIssue, z.ZodTypeDef, unknown> = z.union([
   zodBaseIssue.extend({
     code: z.literal("invalid_type"),
-    expected: z.nativeEnum(z.ZodParsedType),
+    // The `expected` field isn't always one of z.ZodParsedType contrary to how
+    // Zod defines. Here's a real world example:
+    // Schema: require('zod').enum(['a', 'b', 'c']).parse(undefined)
+    // {
+    //   expected: "'a' | 'b' | 'c'",
+    //   received: 'undefined',
+    //   code: 'invalid_type',
+    //   path: [],
+    //   message: 'Required'
+    // }
+    expected: z.custom<z.ZodParsedType>((v) => typeof v === "string"),
     received: z.nativeEnum(z.ZodParsedType),
   }),
   zodBaseIssue.extend({
