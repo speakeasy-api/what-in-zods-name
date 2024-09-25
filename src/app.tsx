@@ -11,6 +11,7 @@ import { ZodFormattedError, ZodRawError } from "./components/zod-error";
 import speakeasyWhiteLogo from "./assets/speakeasy-white.svg";
 import speakeasyBlackLogo from "./assets/speakeasy-black.svg";
 import zodLogo from "./assets/zod.svg";
+import { stringFromBase64, stringToBase64 } from "./lib/base64";
 
 const ZodFormattedErrorMemo = React.memo(ZodFormattedError);
 
@@ -22,8 +23,8 @@ function App() {
     }
 
     const searchParams = new URLSearchParams(window.location.search);
-    const zerror = searchParams.get("err");
-    return zerror ? [zerror] : initial;
+    const zerror = searchParams.get("e");
+    return zerror ? [stringFromBase64(zerror)] : initial;
   });
 
   React.useEffect(() => {
@@ -32,9 +33,9 @@ function App() {
       "popstate",
       () => {
         const searchParams = new URLSearchParams(window.location.search);
-        const zerror = searchParams.get("err");
+        const zerror = searchParams.get("e");
         if (zerror) {
-          setInputs([zerror]);
+          setInputs([stringFromBase64(zerror)]);
         } else {
           setInputs([]);
         }
@@ -60,7 +61,7 @@ function App() {
 
     setInputs((prev) => [...prev, val]);
 
-    const searchParams = new URLSearchParams({ err: val });
+    const searchParams = new URLSearchParams({ e: stringToBase64(val) });
     const q = searchParams.toString();
     if (q) {
       window.history.pushState({}, "", `?${q}`);
@@ -73,7 +74,7 @@ function App() {
     e.preventDefault();
 
     const searchParams = new URLSearchParams(window.location.search);
-    const zerror = searchParams.get("err");
+    const zerror = searchParams.get("e");
 
     if (inputs.length) {
       setInputs([]);
