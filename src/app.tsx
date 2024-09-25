@@ -12,6 +12,7 @@ import speakeasyWhiteLogo from "./assets/speakeasy-white.svg";
 import speakeasyBlackLogo from "./assets/speakeasy-black.svg";
 import zodLogo from "./assets/zod.svg";
 import { stringFromBase64, stringToBase64 } from "./lib/base64";
+import { sampleError } from "./lib/sample";
 
 const ZodFormattedErrorMemo = React.memo(ZodFormattedError);
 
@@ -121,6 +122,20 @@ function App() {
           </div>
         </CardHeader>
         <CardContent>
+          {inputs.length === 0 ? (
+            <div>
+              <p className="mb-2 max-w-prose text-sm">
+                ZodError strings contain a bit of JSON content. This is the
+                array of issues that will be rendered below.
+              </p>
+              <Button
+                onClick={() => setInputs([sampleError])}
+                variant="secondary"
+              >
+                Try an example
+              </Button>
+            </div>
+          ) : null}
           <ul className="space-y-4">
             {inputs.map((input, index) => (
               <li key={index}>
