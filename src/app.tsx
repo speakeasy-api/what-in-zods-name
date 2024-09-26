@@ -156,7 +156,7 @@ function App() {
             <Textarea
               name="zoderror"
               className="h-full min-h-[76px] w-full grow font-mono text-base"
-              placeholder="Paste your ZodError here (Shift+Enter submits)"
+              placeholder="Paste your ZodError"
               onKeyDown={handleKeyDown}
             />
             <div className="flex shrink-0 grow-0 flex-col gap-1">
