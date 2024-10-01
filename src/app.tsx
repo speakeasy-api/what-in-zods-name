@@ -110,7 +110,7 @@ function App() {
                 You're here because you have a big{" "}
                 <code className="text-red-700 dark:text-red-500">ZodError</code>{" "}
                 and you're trying to make sense of it. Throw it in the box below
-                and we'll try to visualize it for you.
+                to visualize it.
               </p>
             </div>
           </div>
