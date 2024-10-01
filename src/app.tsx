@@ -164,26 +164,36 @@ function App() {
               </Button>
             </div>
           </form>
-          <footer>
-            <p className="text-xs">
-              <a
-                className="border-b border-transparent pb-[2px] transition-all duration-200 hover:border-current"
-                href="https://www.speakeasy.com"
-              >
-                Made by the team at{" "}
-                <picture>
-                  <source
-                    srcSet={speakeasyWhiteLogo}
-                    media="(prefers-color-scheme: dark)"
-                  />
-                  <img
-                    className="inline-block h-3 w-auto align-baseline"
-                    src={speakeasyBlackLogo}
-                    alt="Speakeasy"
-                  />
-                </picture>
-              </a>
-            </p>
+          <footer className="text-xs">
+            <ul className="flex gap-x-2">
+              <li>
+                <a
+                  className="border-b border-transparent pb-[2px] transition-all duration-200 hover:border-current"
+                  href="https://www.speakeasy.com"
+                >
+                  Made by the team at <span className="sr-only">Speakeasy</span>
+                  <picture>
+                    <source
+                      srcSet={speakeasyWhiteLogo}
+                      media="(prefers-color-scheme: dark)"
+                    />
+                    <img
+                      className="inline-block h-3 w-auto align-baseline"
+                      src={speakeasyBlackLogo}
+                      alt=""
+                    />
+                  </picture>
+                </a>
+              </li>
+              <li className="before:pe-2 before:content-['•']">
+                <a
+                  className="border-b border-transparent pb-[2px] transition-all duration-200 hover:border-current"
+                  href="https://github.com/speakeasy-api/what-in-zods-name"
+                >
+                  GitHub
+                </a>
+              </li>
+            </ul>
           </footer>
         </div>
       </div>
