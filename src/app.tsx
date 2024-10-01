@@ -1,11 +1,5 @@
 import React from "react";
 import { Button } from "./components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "./components/ui/card";
 import { Textarea } from "./components/ui/textarea";
 import { ZodFormattedError, ZodRawError } from "./components/zod-error";
 import speakeasyWhiteLogo from "./assets/speakeasy-white.svg";
@@ -100,8 +94,8 @@ function App() {
 
   return (
     <main className="h-[100dvh]">
-      <Card className="grid min-h-full w-full grid-rows-[max-content_auto_fit-content(300px)] gap-y-2 border-0">
-        <CardHeader>
+      <div className="grid min-h-full w-full grid-rows-[max-content_auto_fit-content(300px)] gap-y-2 border-0">
+        <div className="border-b border-muted p-4 md:p-6">
           <div className="flex items-center gap-2">
             <img
               src={zodLogo}
@@ -120,8 +114,8 @@ function App() {
               </p>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className="w-full overflow-auto p-4 md:p-6">
           {inputs.length === 0 ? (
             <div>
               <p className="mb-2 max-w-prose text-sm">
@@ -139,16 +133,13 @@ function App() {
           <ul className="space-y-4">
             {inputs.map((input, index) => (
               <li key={index}>
-                <ZodRawError
-                  className="mb-2 w-full max-w-[min(920px,100%)] md:w-fit"
-                  input={input}
-                />
+                <ZodRawError className="mb-2 w-fit" input={input} />
                 <ZodFormattedErrorMemo source={input} />
               </li>
             ))}
           </ul>
-        </CardContent>
-        <CardFooter className="sticky bottom-0 block bg-card">
+        </div>
+        <div className="sticky bottom-0 bg-background p-4 md:p-6">
           <form
             className="mb-2 flex w-full items-center gap-x-2"
             onSubmit={handleSubmit}
@@ -194,8 +185,8 @@ function App() {
               </a>
             </p>
           </footer>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </main>
   );
 }

@@ -86,7 +86,7 @@ export function ZodFormattedError(props: {
   return (
     <div
       className={cn(
-        "w-full rounded-3xl bg-stone-200 md:w-fit dark:bg-zinc-800",
+        "w-fit rounded-3xl bg-stone-200 dark:bg-zinc-800",
         props.className,
       )}
     >
