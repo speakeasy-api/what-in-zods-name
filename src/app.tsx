@@ -104,7 +104,14 @@ function App() {
             />
             <div className="grow-1">
               <h1 className="text-xl font-semibold leading-none tracking-tight">
-                What in Zod's name?
+                What in{" "}
+                <a
+                  className="underline hover:no-underline"
+                  href="https://zod.dev"
+                >
+                  Zod
+                </a>
+                's name?
               </h1>
               <p className="max-w-prose text-sm text-muted-foreground">
                 You're here because you have a big{" "}
@@ -191,6 +198,14 @@ function App() {
                   href="https://github.com/speakeasy-api/what-in-zods-name"
                 >
                   GitHub
+                </a>
+              </li>
+              <li className="before:pe-2 before:content-['•']">
+                <a
+                  className="border-b border-transparent pb-[2px] transition-all duration-200 hover:border-current"
+                  href="https://zod.dev"
+                >
+                  Zod
                 </a>
               </li>
             </ul>
