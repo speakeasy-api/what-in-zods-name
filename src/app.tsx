@@ -178,14 +178,14 @@ function App() {
                   className="border-b border-transparent pb-[2px] transition-all duration-200 hover:border-current"
                   href="https://www.speakeasy.com"
                 >
-                  Made by the team at <span className="sr-only">Speakeasy</span>
+                  Made by the team at &nbsp;<span className="sr-only">Speakeasy</span>
                   <picture>
                     <source
                       srcSet={speakeasyWhiteLogo}
                       media="(prefers-color-scheme: dark)"
                     />
                     <img
-                      className="inline-block h-3 w-auto align-baseline"
+                      className="inline-block h-5 w-auto"
                       src={speakeasyBlackLogo}
                       alt=""
                     />
